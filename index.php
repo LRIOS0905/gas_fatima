@@ -7,7 +7,6 @@
 	$method = $arrUrl[0];
 	$params = "";
 
-	// PRUEBA DE CAMBIOS
 
 	if(!empty($arrUrl[1]))
 	{
