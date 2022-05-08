@@ -31,29 +31,32 @@ class Compras extends Controllers
                 $idCompra = intval($_POST['idCompra']);
                 $idProducto = intval($_POST['idProducto']);
                 $idUsuario = intval($_SESSION['idUser']);
-                $strCodigo = strClean($_POST['txtCodigo']);
-                $strDescripcion = strClean($_POST['txtDescripcion']);
                 $strPrecio = strClean($_POST['precioCompra']);
                 $intCantidad = intval($_POST['txtCantidad']);
-                $strSubtotal = strClean($_POST['subTotal']);
-                $request_compra = "";
 
-                if ($idCompra == 0) {
-                    if ($_SESSION['permisosMod']['w']) {
-                        $option = 1;
-                        $request_compra = $this->model->insertRegistro($idProducto, $idUsuario, $strPrecio, $intCantidad, $strSubtotal);
-                    }
-                }
+                $comprobar = $this->model->consultarDetalle($idProducto, $idUsuario);
 
-                if ($request_compra > 0) {
-                    if ($option == 1) {
-                        $arrResponse = array("status" => true, "msg" => "Producto anexado a la compra", "icono" => "success");
+                if (empty($comprobar)) {
+                    $sub_total = $strPrecio * $intCantidad;
+                    $data = $this->model->registrarDetalle($idProducto, $idUsuario, $strPrecio, $intCantidad, $sub_total);
+                    if ($data == "ok") {
+                        $arrResponse = array('status' => true, 'msg' => 'Producto anexado a la compra', 'icono' => 'success');
+                    } else {
+                        $arrResponse = array('status' => false, 'msg' => 'No se pudo anexar el producto', 'icono' => 'error');
                     }
                 } else {
-                    $arrResponse = array("status" => false, "msg" => "Error al anexar el producto a la compra", "icono" => "success");
+                    $total_cantidad = $comprobar['cantidad'] + $intCantidad;
+                    $sub_total = $total_cantidad * $strPrecio;
+                    $data = $this->model->actualizarDetalle($strPrecio, $total_cantidad, $sub_total, $idProducto, $idUsuario);
+
+                    if ($data == "modificado") {
+                        $arrResponse = array('status' => true, 'msg' => 'Producto actualizado', 'icono' => 'success');
+                    } else {
+                        $arrResponse = array('status' => false, 'msg' => 'Error al actualizar el producto', 'icono' => 'error');
+                    }
                 }
-                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
             }
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
             die();
         }
     }
@@ -67,6 +70,19 @@ class Compras extends Controllers
         $data['total_pagar'] = $this->model->calcularCompra($id_usuario);
 
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function deteleCompra($id)
+    {
+        $arrData = $this->model->deleteDetalle($id);
+
+        if ($arrData == "ok") {
+            $msg = array("status" => true, "msg" => 'Producto eliminado de la compra', 'icono' => 'info');
+        } else {
+            $msg = array("status" => false, "msg" => 'Ocurrió un error eliminando el producto', 'icono' => 'error');
+        }
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
 }

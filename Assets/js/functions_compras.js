@@ -1,3 +1,10 @@
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+});
+
 let tableCompras;
 let tableVerProveedor;
 const cantProd = document.getElementById('txtCantidad');
@@ -5,6 +12,7 @@ const formulario = document.getElementById('formCompras');
 const tblDetalle = document.getElementById("tblDetalle");
 const buscarProveedor = document.getElementById('buscarProveedor');
 const frmProveedor = document.getElementById('nuevoProveedor');
+const mensajeDiv = document.getElementById('mensaje');
 
 document.addEventListener('DOMContentLoaded', () => {
     listarVerProveedor();
@@ -31,6 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (frmProveedor) {
         frmProveedor.addEventListener('submit', validarProveedor);
+    }
+
+    if (tblDetalle) {
+        cargarDetalle();
     }
 
 }, false)
@@ -80,20 +92,29 @@ const crearProveedor = async prov => {
             .then(res => res.json())
             .then(datos => {
                 if (datos.status) {
-                    toastr[datos.icono](datos.msg, "Modulo proveedores");
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: datos.icono,
+                        title: datos.msg,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                     $('.form-control').removeClass('is-valid').removeClass('is-invalid');
                     tableVerProveedor.ajax.reload(null, false);
                     frmProveedor.reset();
                 } else {
-                    toastr[datos.icono](datos.msg, "Modulo proveedores");
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: datos.icono,
+                        title: datos.msg,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             })
     } catch (error) {
         console.log(error);
     }
-
-
-
 }
 
 const buscarProducto = () => {
@@ -157,11 +178,13 @@ const insertarProducto = async(e) => {
                     .then(res => res.json())
                     .then(datos => {
                         if (datos.status) {
-                            console.log('Registro insertado con éxito.');
+                            alertaGeneral(datos.msg, datos.icono);
                             formulario.reset();
                             document.getElementById("txtCantidad").setAttribute('disabled', true);
                             $("#txtCodigo").focus();
                             cargarDetalle();
+                        } else {
+                            alertaGeneral(datos.msg, datos.icono);
                         }
                     })
             } catch (error) {
@@ -188,13 +211,34 @@ const cargarDetalle = detalle => {
                         <td>${row['descripcion']}</td>
                         <td>${row['cantidad']}</td>
                         <td>${row['precio']}</td>
-                        <td>${row['sub_total']}</td>
+                        <td>${number_format(row['sub_total'],2)}</td>
                         <td><button class="btn btn-danger btn-xs" type="button" onclick="deleteDetalle(${row['id']})"><i class="fas fa-trash-alt"></i></button></td>
                         </tr>
                         `
                     })
                     tblDetalle.innerHTML = html;
                     //document.getElementById("totalPagar").value = datos.total_pagar.total;
+                }
+            })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const deleteDetalle = async(id) => {
+    const url = base_url + "/Compras/deteleCompra/" + id;
+    try {
+        await fetch(url, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .then(datos => {
+                if (datos.status) {
+                    alertaGeneral(datos.msg, datos.icono);
+                    cargarDetalle();
+                    document.getElementById('txtCodigo').focus();
+                } else {
+                    alertaGeneral(datos.msg, datos.icono);
                 }
             })
     } catch (error) {
@@ -283,6 +327,60 @@ const validacionCampos = (prov, tel, correo, dir, estado) => {
     Boolean(document.getElementById(estado).value.length > 0) ?
         $('#' + estado).removeClass('is-invalid').addClass('is-valid') :
         $('#' + estado).removeClass('is-valid').addClass('is-invalid');
+}
+
+const number_format = (amount, decimals) => {
+
+    amount += ''; // por si pasan un numero en vez de un string
+    amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
+
+    decimals = decimals || 0; // por si la variable no fue fue pasada
+
+    // si no es un numero o es igual a cero retorno el mismo cero
+    if (isNaN(amount) || amount === 0)
+        return parseFloat(0).toFixed(decimals);
+
+    // si es mayor o menor que cero retorno el valor formateado como numero
+    amount = '' + amount.toFixed(decimals);
+
+    var amount_parts = amount.split('.'),
+        regexp = /(\d+)(\d{3})/;
+
+    while (regexp.test(amount_parts[0]))
+        amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
+
+    return amount_parts.join('.');
+}
+
+const alertasToast = (mensaje, icono) => {
+    Toast.fire({
+        icon: icono,
+        title: mensaje,
+    });
+}
+
+const alertaGeneral = (mensaje, tipo) => {
+    const alerta = document.querySelector('.alert-success');
+
+    if (!alerta) {
+        const divMensaje = document.createElement('div');
+        divMensaje.classList.add('alert', 'text-center');
+
+        if (tipo == 'success') {
+            divMensaje.classList.add('alert-success');
+        } else {
+            divMensaje.classList.add('alert-danger');
+        }
+
+        divMensaje.textContent = mensaje;
+        mensajeDiv.appendChild(divMensaje);
+
+        setTimeout(() => {
+            divMensaje.remove();
+        }, 1000);
+    }
+
+
 }
 
 function validar(obj) {

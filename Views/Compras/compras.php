@@ -39,7 +39,7 @@ getModal('modalBuscarProveedor', $data);
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-info"><i class="fa-regular fa-phone"></i></span>
+                                        <span class="input-group-text bg-info"><i class="fa-solid fa-envelope-circle-check"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="emailProveedor" name="emailProveedor" readonly>
                                 </div>
@@ -107,7 +107,7 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-2">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-regular fa-cart-circle-plus"></i></span>
+                                            <span class="input-group-text bg-info"><i class="fa-solid fa-circle-plus"></i></span>
                                         </div>
                                         <input type="number" class="form-control" id="txtCantidad" name="txtCantidad" placeholder="" disabled>
                                     </div>
@@ -122,7 +122,9 @@ getModal('modalBuscarProveedor', $data);
                                 </div>
                             </div>
                         </form>
+                        <h4 id="mensaje" class="div_mensaje"></h4>
                     </div>
+                    <hr>
                     <div class="card-body">
                         <table class="table table-sm table-hover" width="100%">
                             <thead class="text-center thead-dark">
