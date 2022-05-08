@@ -50,7 +50,7 @@ class Compras extends Controllers
                     $data = $this->model->actualizarDetalle($strPrecio, $total_cantidad, $sub_total, $idProducto, $idUsuario);
 
                     if ($data == "modificado") {
-                        $arrResponse = array('status' => true, 'msg' => 'Producto actualizado', 'icono' => 'success');
+                        $arrResponse = array('status' => true, 'msg' => 'Producto actualizado', 'icono' => 'info');
                     } else {
                         $arrResponse = array('status' => false, 'msg' => 'Error al actualizar el producto', 'icono' => 'error');
                     }
@@ -78,7 +78,7 @@ class Compras extends Controllers
         $arrData = $this->model->deleteDetalle($id);
 
         if ($arrData == "ok") {
-            $msg = array("status" => true, "msg" => 'Producto eliminado de la compra', 'icono' => 'info');
+            $msg = array("status" => true, "msg" => 'Producto eliminado de la compra', 'icono' => 'danger');
         } else {
             $msg = array("status" => false, "msg" => 'Ocurrió un error eliminando el producto', 'icono' => 'error');
         }

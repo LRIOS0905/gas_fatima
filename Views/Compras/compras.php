@@ -15,7 +15,7 @@ getModal('modalBuscarProveedor', $data);
         <div class="row">
             <div class="col-md-12">
                 <div class="card shadows">
-                    <div class="card-header bg-info">
+                    <div class="card-header bg-primary">
                         <h3 class="card-title">INFORMACION DEL PROVEEDOR </h3>
                     </div>
                     <div class="card-body">
@@ -31,7 +31,7 @@ getModal('modalBuscarProveedor', $data);
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-info"><i class="fa-regular fa-phone"></i></span>
+                                        <span class="input-group-text bg-primary"><i class="fa-regular fa-phone"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="telProveedor" name="telProveedor" readonly>
                                 </div>
@@ -39,7 +39,7 @@ getModal('modalBuscarProveedor', $data);
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-info"><i class="fa-solid fa-envelope-circle-check"></i></span>
+                                        <span class="input-group-text bg-primary"><i class="fa-solid fa-envelope-circle-check"></i></span>
                                     </div>
                                     <input type="text" class="form-control" id="emailProveedor" name="emailProveedor" readonly>
                                 </div>
@@ -52,7 +52,7 @@ getModal('modalBuscarProveedor', $data);
         <div class="row">
             <div class="col-md-8">
                 <div class="card shadows">
-                    <div class="card-header bg-info text-center">
+                    <div class="card-header bg-primary text-center">
                         <h3 class="card-title">FORMULARIO DE COMPRAS</h3>
                     </div>
                     <div class="card-body">
@@ -65,7 +65,7 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-regular fa-barcode"></i></span>
+                                            <span class="input-group-text bg-primary"><i class="fa-regular fa-barcode"></i></span>
                                         </div>
                                         <input type="text" id="txtCodigo" name="txtCodigo" class="form-control" placeholder="Código del producto">
                                     </div>
@@ -73,7 +73,7 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-brands fa-product-hunt"></i></span>
+                                            <span class="input-group-text bg-primary"><i class="fa-brands fa-product-hunt"></i></span>
                                         </div>
                                         <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" placeholder="Descripción del producto" readonly>
                                     </div>
@@ -81,7 +81,7 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-solid fa-dollar-sign"></i></span>
+                                            <span class="input-group-text bg-primary"><i class="fa-solid fa-dollar-sign"></i></span>
                                         </div>
                                         <input type="text" id="precioCompra" name="precioCompra" class="form-control" placeholder="Precio de compra" readonly>
                                     </div>
@@ -91,7 +91,7 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-3">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-solid fa-trademark"></i></span>
+                                            <span class="input-group-text bg-primary"><i class="fa-solid fa-trademark"></i></span>
                                         </div>
                                         <input type="text" id="txtMarca" name="txtMarca" class="form-control" placeholder="Marca" readonly>
                                     </div>
@@ -99,7 +99,7 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-3">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-regular fa-box-taped"></i></span>
+                                            <span class="input-group-text bg-primary"><i class="fa-regular fa-box-taped"></i></span>
                                         </div>
                                         <input type="text" id="txtTipo" name="txtTipo" class="form-control" placeholder="Tipo" readonly>
                                     </div>
@@ -107,7 +107,7 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-2">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-solid fa-circle-plus"></i></span>
+                                            <span class="input-group-text bg-primary"><i class="fa-solid fa-circle-plus"></i></span>
                                         </div>
                                         <input type="number" class="form-control" id="txtCantidad" name="txtCantidad" placeholder="" disabled>
                                     </div>
@@ -115,14 +115,17 @@ getModal('modalBuscarProveedor', $data);
                                 <div class="col-md-4">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-info"><i class="fa-regular fa-hand-holding-dollar"></i></span>
+                                            <span class="input-group-text bg-primary"><i class="fa-regular fa-hand-holding-dollar"></i></span>
                                         </div>
                                         <input type="text" id="subTotal" name="subTotal" class="form-control" placeholder="Sub-Total" readonly>
                                     </div>
+
                                 </div>
                             </div>
                         </form>
-                        <h4 id="mensaje" class="div_mensaje"></h4>
+
+                        <div id="mensaje"></div>
+
                     </div>
                     <hr>
                     <div class="card-body">
@@ -147,7 +150,7 @@ getModal('modalBuscarProveedor', $data);
 
             <div class="col-md-4">
                 <div class="card shadows">
-                    <div class="card-header bg-info">
+                    <div class="card-header bg-primary">
                         <h3 class="card-title">DETALLE DE LA COMPRA</h3>
                     </div>
                     <div class="card-body">

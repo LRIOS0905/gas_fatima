@@ -205,16 +205,20 @@ const cargarDetalle = detalle => {
                 if (datos) {
                     let html = "";
                     datos.detalle.forEach(row => {
-                        html += `
-                        <tr>
-                        <td>${row['codigo']}</td>
-                        <td>${row['descripcion']}</td>
-                        <td>${row['cantidad']}</td>
-                        <td>${row['precio']}</td>
-                        <td>${number_format(row['sub_total'],2)}</td>
-                        <td><button class="btn btn-danger btn-xs" type="button" onclick="deleteDetalle(${row['id']})"><i class="fas fa-trash-alt"></i></button></td>
-                        </tr>
-                        `
+                        if (row['id_producto'] == "") {
+                            html += `hhhhhh`;
+                        } else {
+                            html += `
+                            <tr>
+                            <td>${row['codigo']}</td>
+                            <td>${row['descripcion']}</td>
+                            <td>${row['cantidad']}</td>
+                            <td>${row['precio']}</td>
+                            <td>${number_format(row['sub_total'], 2)}</td>
+                            <td><button class="btn btn-danger btn-xs" type="button" onclick="deleteDetalle(${row['id']})"><i class="fas fa-trash-alt"></i></button></td>
+                            </tr>
+                            `
+                        }
                     })
                     tblDetalle.innerHTML = html;
                     //document.getElementById("totalPagar").value = datos.total_pagar.total;
@@ -226,6 +230,7 @@ const cargarDetalle = detalle => {
 }
 
 const deleteDetalle = async(id) => {
+    limpiarHtml()
     const url = base_url + "/Compras/deteleCompra/" + id;
     try {
         await fetch(url, {
@@ -368,6 +373,8 @@ const alertaGeneral = (mensaje, tipo) => {
 
         if (tipo == 'success') {
             divMensaje.classList.add('alert-success');
+        } else if (tipo == 'info') {
+            divMensaje.classList.add('alert-info');
         } else {
             divMensaje.classList.add('alert-danger');
         }
@@ -379,9 +386,13 @@ const alertaGeneral = (mensaje, tipo) => {
             divMensaje.remove();
         }, 1000);
     }
-
-
 }
+
+const limpiarHtml = () => {
+    while (mensajeDiv.firstChild) {
+        mensajeDiv.removeChild(mensajeDiv.firstChild);
+    }
+};
 
 function validar(obj) {
     return !Object.values(obj).every(input => input !== '');

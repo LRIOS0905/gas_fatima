@@ -72,7 +72,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer text-center">
-                                                <button type="submit" class="btn btn-primary">Crear proveedor</button>
+                                                <button type="submit" class="btn btn-success">Crear proveedor</button>
                                             </div>
                                         </form>
                                     </div>
