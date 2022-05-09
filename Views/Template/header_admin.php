@@ -14,7 +14,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?= media(); ?>/js/plugins/fontawesome-free/css/all.min.css">
   <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="<?= media(); ?>/js/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="<?= media(); ?>/js/plugins/sweetalert2/sweetalert2.min.css">
   <!-- Jquery UI -->
   <link rel="stylesheet" href="<?= media(); ?>/css/jquery-ui.min.css">
   <!-- Select2 -->
@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="<?= media(); ?>/js/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Toasr-->
   <link rel="stylesheet" href="<?= media(); ?>/js/plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= media(); ?>/css/adminlte.min.css">
   <!-- My personal theme style -->

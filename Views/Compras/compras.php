@@ -50,8 +50,8 @@ getModal('modalBuscarProveedor', $data);
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
-                <div class="card shadows">
+            <div class="col-md-12">
+                <div class="card shadows" style="height:600px">
                     <div class="card-header bg-primary text-center">
                         <h3 class="card-title">FORMULARIO DE COMPRAS</h3>
                     </div>
@@ -122,13 +122,9 @@ getModal('modalBuscarProveedor', $data);
 
                                 </div>
                             </div>
+                            <div id="mensaje"></div>
                         </form>
 
-                        <div id="mensaje"></div>
-
-                    </div>
-                    <hr>
-                    <div class="card-body">
                         <table class="table table-sm table-hover" width="100%">
                             <thead class="text-center thead-dark">
                                 <tr>
@@ -144,11 +140,41 @@ getModal('modalBuscarProveedor', $data);
 
                             </tbody>
                         </table>
+
+                    </div>
+                    <div class="card-footer ml-auto">
+                        <div class="row">
+                            <!-- /.col -->
+                            <div class="col-12">
+                                <div class="table-responsive" width="100%">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Subtotal:</th>
+                                                <td id="sub_total">$250.30</td>
+                                            </tr>
+                                            <tr>
+                                                <th>IVA (15%)</th>
+                                                <td>$10.34</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total:</th>
+                                                <td>$265.24</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- <div class="form-group">
+                                        <label for="sub_total"><i class="fa-solid fa-money-check-dollar text-primary"></i> Subtotal</label>
+                                        <input type="text" class="form-control" id="sub_total" name="sub_total" aria-describedby="total_pagar" disabled>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
                 <div class="card shadows">
                     <div class="card-header bg-primary">
                         <h3 class="card-title">DETALLE DE LA COMPRA</h3>
@@ -157,7 +183,7 @@ getModal('modalBuscarProveedor', $data);
 
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 </div>

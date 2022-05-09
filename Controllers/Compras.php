@@ -78,7 +78,7 @@ class Compras extends Controllers
         $arrData = $this->model->deleteDetalle($id);
 
         if ($arrData == "ok") {
-            $msg = array("status" => true, "msg" => 'Producto eliminado de la compra', 'icono' => 'danger');
+            $msg = array("status" => true, "msg" => 'Producto eliminado de la compra', 'icono' => 'error');
         } else {
             $msg = array("status" => false, "msg" => 'Ocurrió un error eliminando el producto', 'icono' => 'error');
         }

@@ -1,9 +1,19 @@
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
+    iconColor: 'white',
     showConfirmButton: false,
-    timer: 3000
-});
+    timer: 1500,
+    animation: true,
+    customClass: {
+        popup: 'colored-toast'
+    },
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+})
 
 let tableCompras;
 let tableVerProveedor;
@@ -178,13 +188,13 @@ const insertarProducto = async(e) => {
                     .then(res => res.json())
                     .then(datos => {
                         if (datos.status) {
-                            alertaGeneral(datos.msg, datos.icono);
+                            alertasToast(datos.msg, datos.icono);
                             formulario.reset();
                             document.getElementById("txtCantidad").setAttribute('disabled', true);
                             $("#txtCodigo").focus();
                             cargarDetalle();
                         } else {
-                            alertaGeneral(datos.msg, datos.icono);
+                            alertasToast(datos.msg, datos.icono);
                         }
                     })
             } catch (error) {
@@ -221,7 +231,7 @@ const cargarDetalle = detalle => {
                         }
                     })
                     tblDetalle.innerHTML = html;
-                    //document.getElementById("totalPagar").value = datos.total_pagar.total;
+                    document.getElementById("sub_total").textContent = number_format(datos.total_pagar.total, 2);
                 }
             })
     } catch (error) {
@@ -239,11 +249,11 @@ const deleteDetalle = async(id) => {
             .then(res => res.json())
             .then(datos => {
                 if (datos.status) {
-                    alertaGeneral(datos.msg, datos.icono);
+                    alertasToast(datos.msg, datos.icono)
                     cargarDetalle();
                     document.getElementById('txtCodigo').focus();
                 } else {
-                    alertaGeneral(datos.msg, datos.icono);
+                    alertasToast(datos.msg, datos.icono)
                 }
             })
     } catch (error) {
