@@ -51,7 +51,7 @@
 <script src="<?= media(); ?>/js/<?= $data['page_functions_js']; ?>"></script>
 <script>
   $(function() {
-    var menues=$('.nav-links');
+    var menues = $('.nav-links');
     menues.click(function() {
       menues.removeClass('active');
       $(this).addClass('active');

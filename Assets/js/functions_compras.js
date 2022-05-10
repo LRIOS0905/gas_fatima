@@ -23,6 +23,7 @@ const tblDetalle = document.getElementById("tblDetalle");
 const buscarProveedor = document.getElementById('buscarProveedor');
 const frmProveedor = document.getElementById('nuevoProveedor');
 const mensajeDiv = document.getElementById('mensaje');
+const btnGenerarCompra = document.getElementById('generarCompra');
 
 document.addEventListener('DOMContentLoaded', () => {
     listarVerProveedor();
@@ -55,7 +56,29 @@ document.addEventListener('DOMContentLoaded', () => {
         cargarDetalle();
     }
 
+    if (btnGenerarCompra) {
+        btnGenerarCompra.addEventListener('click', validarCompra);
+    }
+
 }, false)
+
+const validarCompra = compra => {
+    const proveedorInput = document.getElementById('nombreProveedor').value;
+    const telefonoInput = document.getElementById('telProveedor').value;
+    const emailInput = document.getElementById('emailProveedor').value;
+
+    if (tblDetalle.textContent == '') {
+        Swal.fire('Datos de la compra!', 'Aún no cuenta con productos para generar la compra', 'info')
+        return;
+    }
+
+    if (proveedorInput === '' || telefonoInput === '' || emailInput === '') {
+        Swal.fire('Datos del proveedor!', 'Antes de generar la compra debe ingresar el proveedor', 'warning')
+        return;
+    }
+
+    generarCompra();
+}
 
 const validarProveedor = e => {
     e.preventDefault();
@@ -231,7 +254,19 @@ const cargarDetalle = detalle => {
                         }
                     })
                     tblDetalle.innerHTML = html;
-                    document.getElementById("sub_total").textContent = number_format(datos.total_pagar.total, 2);
+
+                    document.getElementById('iva').textContent = `IVA ${datos.impuesto.impuesto} %`;
+
+                    let antes_impuesto = datos.total_pagar.total;
+                    document.getElementById("sub_total").value = number_format(antes_impuesto, 2);
+
+                    let impuesto = datos.impuesto.impuesto / 100;
+
+                    let total_impuesto = antes_impuesto * impuesto;
+                    document.getElementById("total_impuesto").value = number_format(total_impuesto, 2);
+
+                    let gran_total = parseFloat(antes_impuesto) + parseFloat(total_impuesto);
+                    document.getElementById("gran_total").value = number_format(gran_total, 2);
                 }
             })
     } catch (error) {
@@ -259,6 +294,57 @@ const deleteDetalle = async(id) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+const generarCompra = compra => {
+    Swal.fire({
+        title: 'Seguro de generar la compra?',
+        text: "Verifique que los datos son correctos!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, generar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const url = base_url + '/Compras/generarCompra'
+            const proveedorId = document.getElementById('idProveedor').value;
+            const productoId = document.getElementById('idProducto').value;
+            const proveedorInput = document.getElementById('nombreProveedor').value;
+            const telefonoInput = document.getElementById('telProveedor').value;
+            const emailInput = document.getElementById('emailProveedor').value;
+            const sub_total = document.getElementById('sub_total').value;
+            const impuesto = document.getElementById('total_impuesto').value;
+            const gran_total = document.getElementById('gran_total').value;
+
+            const formData = new FormData();
+            formData.append('idProducto', productoId);
+            formData.append('idProveedor', proveedorId);
+            formData.append('nombreProveedor', proveedorInput);
+            formData.append('telProveedor', telefonoInput);
+            formData.append('emailProveedor', emailInput);
+            formData.append('sub_total', sub_total);
+            formData.append('impuesto', impuesto);
+            formData.append('gran_total', gran_total)
+            try {
+                fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status) {
+                            Swal.fire('Mensaje de confirmación!', data.msg, data.icono);
+                            formulario.reset();
+                            cargarDetalle();
+                        }
+                    })
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    })
 }
 
 const modalProveedor = proveedor => {
@@ -317,6 +403,7 @@ $('#tableVerProveedor').on('click', '.enviarProveedor', function() {
         let data = tableVerProveedor.row(this).data();
     }
     $('#modalBuscarProveedor').modal('hide');
+    document.getElementById('idProveedor').value = data[0];
     document.getElementById('nombreProveedor').value = data[1];
     document.getElementById('telProveedor').value = data[2];
     document.getElementById('emailProveedor').value = data[3];

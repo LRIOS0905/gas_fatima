@@ -67,6 +67,7 @@ class Compras extends Controllers
         $id_usuario = intVal($_SESSION['idUser']);
 
         $data['detalle'] = $this->model->getDetalle($id_usuario);
+        $data['impuesto'] = $this->model->getImpuesto();
         $data['total_pagar'] = $this->model->calcularCompra($id_usuario);
 
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
@@ -81,6 +82,49 @@ class Compras extends Controllers
             $msg = array("status" => true, "msg" => 'Producto eliminado de la compra', 'icono' => 'error');
         } else {
             $msg = array("status" => false, "msg" => 'Ocurrió un error eliminando el producto', 'icono' => 'error');
+        }
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function generarCompra()
+    {
+        $id_usuario = $_SESSION['idUser'];
+        $id_prov = $_POST['idProveedor'];
+        $total = $this->model->calcularCompra($id_usuario);
+
+        $arrData = $this->model->registrarCompra($id_usuario,  $id_prov, $total['total']);
+
+        if ($arrData == "ok") {
+            $detalle = $this->model->getDetalle($id_usuario);
+            /**CREAMOS MODELO PARA OBTENER ULTIMO ID DE LA COMPRA */
+            $id_compra =  $this->model->id_compra();
+            $iva = $this->model->getImpuesto();
+            foreach ($detalle as $row) {
+                /**CAPTURAMOS LA VARIABLES PARA SER ALMACENADAS */
+                $cantidad = $row['cantidad'];
+                $precio = $row['precio'];
+                $id_producto = $row['id_producto'];
+                $sub_total = $cantidad * $precio;
+                $calculo_iva =  $iva['impuesto'] / 100;
+                $impuesto =  $sub_total * $calculo_iva;
+                $gran_total = $sub_total +   $impuesto;
+                $this->model->registrarDetalleCompra($id_compra['id'], $id_producto, $cantidad, $precio, $sub_total, $impuesto, $gran_total);
+                /**CONSULTAMOS STOCK ACTUAL */
+                $stock_actual = $this->model->getProductos($id_producto);
+                /**SUMAMOS STOCK ACTUAL MAS COMPRA */
+                $nuevo_stock = $stock_actual['stock'] + $cantidad;
+                /**ACTUALIZAMOS STOCK SEGUN LA COMPRA */
+                $this->model->actualizarStock($nuevo_stock, $id_producto);
+            }
+            /**CREAMOS MODELOS PARA VACIAR TABLA DETALLE COMPRA */
+            $vaciar = $this->model->vaciarDetalle($id_usuario);
+
+            if ($vaciar == 'ok') {
+                $msg = array('status' => true, 'msg' => 'La compra se ha generado correctamente', 'icono' => 'success', 'id_compra' => $id_compra['id']);
+            }
+        } else {
+            $msg = "Error al registrar la compra";
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();

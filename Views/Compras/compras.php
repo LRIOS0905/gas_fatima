@@ -25,6 +25,7 @@ getModal('modalBuscarProveedor', $data);
                                     <div class="input-group-prepend">
                                         <button type="button" id="buscarProveedor" class="btn btn-success"><i class="fa-solid fa-search"></i></button>
                                     </div>
+                                    <input type="hidden" class="form-control" id="idProveedor" name="idProveedor" readonly>
                                     <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor" readonly>
                                 </div>
                             </div>
@@ -144,32 +145,31 @@ getModal('modalBuscarProveedor', $data);
                     </div>
                     <div class="card-footer ml-auto">
                         <div class="row">
-                            <!-- /.col -->
                             <div class="col-12">
-                                <div class="table-responsive" width="100%">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th>Subtotal:</th>
-                                                <td id="sub_total">$250.30</td>
-                                            </tr>
-                                            <tr>
-                                                <th>IVA (15%)</th>
-                                                <td>$10.34</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Total:</th>
-                                                <td>$265.24</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <!-- <div class="form-group">
-                                        <label for="sub_total"><i class="fa-solid fa-money-check-dollar text-primary"></i> Subtotal</label>
-                                        <input type="text" class="form-control" id="sub_total" name="sub_total" aria-describedby="total_pagar" disabled>
-                                    </div> -->
-                                </div>
+                                <table class="table table-responsive" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <th>Subtotal:</th>
+                                            <td><input type="text" class="form-control" id="sub_total" name="sub_total" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th id="iva">IVA (15%)</th>
+                                            <td><input type="text" class="form-control" id="total_impuesto" name="total_impuesto" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total:</th>
+                                            <td><input type="text" class="form-control" id="gran_total" name="gran_total" readonly></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <!-- /.col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" id="generarCompra" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Generar compra
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
